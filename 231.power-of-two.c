@@ -7,12 +7,16 @@
 // @lc code=start
 
 
-bool isPowerOfTwo(int n){
-    return n > 0 && !(n & (n - 1));
+bool isPowerOfTwo(int n)
+{
+    // early return for beating 100%
+    if (n <= 0)
+        return false;
+    return !(n & (n - 1));
 }
 // @lc code=end
 
 // Accepted
-// 1108/1108 cases passed (6 ms)
-// Your runtime beats 22.54 % of c submissions
-// Your memory usage beats 97.65 % of c submissions (5.4 MB)
+// 1108/1108 cases passed (0 ms)
+// Your runtime beats 100 % of c submissions
+// Your memory usage beats 29.33 % of c submissions (5.6 MB)
