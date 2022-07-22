@@ -8,45 +8,38 @@
 
 // @lc code=start
 
-
-char * addBinary(char * a, char * b){
+char *addBinary(char *a, char *b) {
     // Result length should be max(a_char, b_char) or max(a_char, b_char) + 1
     int a_length = strlen(a);
     int b_length = strlen(b);
     int result_length = a_length > b_length ? a_length : b_length;
-    char * result = (char *)malloc(sizeof(char) * (result_length + 2));
+    char *result = (char *)malloc(sizeof(char) * (result_length + 2));
     result[result_length + 1] = '\0';
 
     // Add from tail of each string
     int carry = 0;
-    for(int i = 0; i <= result_length; i++)
-    {
-        char a_char = a_length - 1 - i >= 0 ? a[a_length - 1 -i] : '0';
-        char b_char = b_length - 1 - i >= 0 ? b[b_length - 1 -i] : '0';
-        if(a_char == b_char)
-        {
-            if(carry)
+    for (int i = 0; i <= result_length; i++) {
+        char a_char = a_length - 1 - i >= 0 ? a[a_length - 1 - i] : '0';
+        char b_char = b_length - 1 - i >= 0 ? b[b_length - 1 - i] : '0';
+        if (a_char == b_char) {
+            if (carry)
                 result[result_length - i] = '1';
             else
                 result[result_length - i] = '0';
-            if(a_char == '1')
+            if (a_char == '1')
                 carry = 1;
             else
                 carry = 0;
-        }
-        else if(carry == 0)
-        {
+        } else if (carry == 0) {
             result[result_length - i] = '1';
             carry = 0;
-        }
-        else
-        {
-            result[result_length -i] = '0';
+        } else {
+            result[result_length - i] = '0';
             carry = 1;
         }
     }
-    
-    if(result[0] == '1')
+
+    if (result[0] == '1')
         return result;
     else
         return result + 1;
