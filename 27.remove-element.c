@@ -6,25 +6,21 @@
 
 // #include <bits/stdc++.h>
 // @lc code=start
-int removeElement(int* nums, int numsSize, int val){
+int removeElement(int *nums, int numsSize, int val) {
     // Early return
-    if(numsSize == 0)
+    if (numsSize == 0)
         return 0;
-    
+
     // A simple queue structure
     int queue[numsSize];
     int front = 0, rear = 0, repeat_count = 0;
 
-    for(int i = 0; i < numsSize; i++)
-    {
-        if(nums[i] == val)
-        {
+    for (int i = 0; i < numsSize; i++) {
+        if (nums[i] == val) {
             // Enqueue
             queue[rear++] = i;
             repeat_count++;
-        }
-        else if(rear > front)
-        {
+        } else if (rear > front) {
             // Swap to queue.front
             nums[queue[front++]] = nums[i];
             queue[rear++] = i;
