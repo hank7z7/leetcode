@@ -64,19 +64,21 @@
  * };
  */
 
-int maxDepth(struct TreeNode *root) {
-    if (!root)
-        return 0;
+int maxDepth(struct TreeNode *root)
+{
+	if (!root)
+		return 0;
 
-    int left_depth = maxDepth(root->left);
-    int right_depth = maxDepth(root->right);
+	int left_depth = maxDepth(root->left);
+	int right_depth = maxDepth(root->right);
 
-    // Return -1 for not balanced
-    if (left_depth == -1 || right_depth == -1 ||
-        abs(left_depth - right_depth) > 1)
-        return -1;
-    else
-        return (left_depth >= right_depth ? left_depth : right_depth) + 1;
+	// Return -1 for not balanced
+	if (left_depth == -1 || right_depth == -1 ||
+	    abs(left_depth - right_depth) > 1)
+		return -1;
+	else
+		return (left_depth >=
+			right_depth ? left_depth : right_depth) + 1;
 }
 
 // The first version but only beats 69%
@@ -103,7 +105,11 @@ int maxDepth(struct TreeNode *root) {
 //     left_depth : right_depth) + 1;
 // }
 
-bool isBalanced(struct TreeNode *root) { return maxDepth(root) >= 0; }
+bool isBalanced(struct TreeNode *root)
+{
+	return maxDepth(root) >= 0;
+}
+
 // @lc code=end
 
 // Accepted
