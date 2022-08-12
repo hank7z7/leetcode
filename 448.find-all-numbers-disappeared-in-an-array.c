@@ -83,3 +83,8 @@ int *findDisappearedNumbers(int *nums, int numsSize, int *returnSize)
 // 		printf("%d", result[i]);
 // 	return 0;
 // }
+
+// Accepted
+// 33/33 cases passed (201 ms)
+// Your runtime beats 33.89 % of c submissions
+// Your memory usage beats 90.29 % of c submissions (17.3 MB)
