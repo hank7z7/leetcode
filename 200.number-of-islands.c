@@ -127,3 +127,7 @@ int main(int argc, char **argv)
 
 	return 0;
 }
+// Accepted
+// 49/49 cases passed (15 ms)
+// Your runtime beats 96.57 % of c submissions
+// Your memory usage beats 85.98 % of c submissions (9.6 MB)
