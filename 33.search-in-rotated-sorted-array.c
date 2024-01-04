@@ -68,7 +68,7 @@ int search(int *nums, int numsSize, int target)
 			return mid;
 
 		if (target < nums[mid]) {
-			// Left part is sorted, equal case is must!
+			// Left part is ascending, equal case is must!
 			// And target is in right part
 			if (nums[left] <= nums[mid] && target < nums[left]) {
 				// Target is in left part
@@ -78,12 +78,12 @@ int search(int *nums, int numsSize, int target)
 				// else
 				left = mid + 1;
 			}
-			// Left part is not sorted
+			// Left part is not ascending OR target is in left part
 			else {
 				right = mid - 1;
 			}
 		} else {
-			// Right part is sorted, equal case is must!
+			// Right part is ascending, equal case is must!
 			// And target is in left part
 			if (nums[mid] <= nums[right] && nums[right] < target) {
 				// Target is in right part
@@ -93,7 +93,7 @@ int search(int *nums, int numsSize, int target)
 				// else
 				right = mid - 1;
 			}
-			// Right part is not sorted
+			// Right part is not ascending OR target is in right part
 			else {
 				left = mid + 1;
 			}
