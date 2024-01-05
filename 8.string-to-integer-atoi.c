@@ -110,94 +110,59 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <limits.h>
 #include <math.h>
-// @lc code=start
-bool is_digit(char c)
-{
-    if(c >= '0' && c <= '9')
-        return true;
-    else
-        return false;
-}
+#include <ctype.h>
 
+// @lc code=start
 int myAtoi(char* s) {
-    int length = strlen(s);
     long long result = 0;
     int num_of_bits = 0;
-    int sign_count = 0;
-    bool have_space = false;
-    bool is_overflow = false;
-    bool first_digit = false;
-
-    for(int i = length - 1; i >= 0; i--)
+    int sign = 1;
+    bool first_not_zero = false;
+    // Ignore all space prefix
+    while(*s == ' ')
     {
-        if(is_digit(s[i]))
-        {
-            if(!first_digit)
-            {
-                have_space = false;
-                first_digit = true;
-                sign_count = 0;
-                result = 0;
-                num_of_bits = 0;
-            }
-            num_of_bits++;
-            if(sign_count > 0)
-                return 0;
-            if(num_of_bits > 10 && s[i] != '0')
-                result = __INT32_MAX__;
-            else if(s[i] != '0')
-            {
-                long long multiplier = 1;
-                for(int i = 1; i < num_of_bits; i++)
-                    multiplier *= 10;
-                result += (s[i] - '0') * multiplier;
-            }
-            if(!is_overflow && num_of_bits > 10)
-            {
-                is_overflow = true;
-            }
-        }
-        else if(s[i] == '-')
-        {
-            if(sign_count > 0 && first_digit)
-                return 0;
-            else
-                sign_count++;
-            result = ~result + 1;
-            first_digit = false;
-        }
-        else if(s[i] == '+')
-        {
-            if(sign_count > 0 && first_digit)
-                return 0;
-            else
-                sign_count++;
-            first_digit = false;
-        }
-        else if(s[i] != ' ')
-        {
-            if(result != 0)
-            {
-                num_of_bits = 0;
-                result = 0;
-            }
-        }
-        else if(s[i] == ' ')
-        {
-            first_digit = false;
-            have_space = true;
-        }
-        // printf("%lld\n", result);
+        s++;
     }
 
-    if(sign_count > 1)
-        return 0;
-    if(result > __INT32_MAX__)
-        return __INT32_MAX__;
-    else if(result <= -2147483648 || ((result == -2147483647) && is_overflow))
-        return -2147483648;
-    return (int)(result);
+    // Sign bit
+    if(*s == '-')
+    {
+        sign = -1;
+        s++;
+    }
+    else if(*s == '+')
+    {
+        s++;
+    }
+
+    // If more than two signs, or space after integer, don't enter the while loop
+    while(isdigit(*s))
+    {
+        if(*s != '0')
+            first_not_zero = true;
+        if(first_not_zero)
+            num_of_bits++;
+        if(num_of_bits > 10)
+        {
+            if(sign == 1)
+                return INT_MAX;
+            else if(sign == -1)
+                return INT_MIN;
+            break;
+        }
+        result = result * 10 + (*s - '0');
+        s++;
+    }
+
+    result *= sign;
+    if(result > INT_MAX)
+        return INT_MAX;
+    else if(result < INT_MIN)
+        return INT_MIN;
+    else
+        return (int)(result);
 }
 // @lc code=end
 
@@ -223,6 +188,7 @@ int main(int argc, char** argv)
     char input_1075[] = "-13+8\0";
     char input_1078[] = "21474836++\0";
     char input_1079[] = "  +  413\0";
+    char input_1082[] = "  0000000000012345678\0";
 
     printf("%d\n", myAtoi(input_1));
     printf("%d\n", myAtoi(input_2));
@@ -244,6 +210,8 @@ int main(int argc, char** argv)
     printf("%d\n", myAtoi(input_1075));
     printf("%d\n", myAtoi(input_1078));
     printf("%d\n", myAtoi(input_1079));
+    printf("%d\n", myAtoi(input_1082));
+
 
     return 0;
 }
