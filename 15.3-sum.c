@@ -75,7 +75,7 @@ int cmp(const void* a, const void* b) { return *(int*) a - *(int*) b; }
 int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)
 {
     *returnSize        = 0;
-    int   size_now     = 100000;
+    int   size_now     = 1000;
     int** result       = (int**) malloc(sizeof(int*) * size_now);
     *returnColumnSizes = (int*) malloc(sizeof(int) * size_now);
 
@@ -87,45 +87,39 @@ int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes
     // first will eventaully find a solution
     for (first = 0; first <= (numsSize - 3); first++)
     {
-        end = numsSize - 1;
-        for (second = first + 1; second < end; second++)
+        // Check if the first is duplicate
+        if (!(first >= 1 && (nums[first] == nums[first - 1])))
         {
-            int sum = nums[first] + nums[second] + nums[end];
-            // Find one solution
-            if (sum == 0)
+            end = numsSize - 1;
+            for (second = first + 1; second < end; second++)
             {
-                // Search for exist result
-                bool is_exist = false;
-                for (int i = (*returnSize) - 1; i >= 0; i--)
+                if (!(second >= (first + 2) && (nums[second] == nums[second - 1])))
                 {
-                    if ((result[i][0] == nums[first]) && (result[i][1] == nums[second]))
+                    int sum = nums[first] + nums[second] + nums[end];
+                    // Find one solution
+                    if (sum == 0)
                     {
-                        is_exist = true;
-                        break;
+                        if (*returnSize == (size_now - 1))
+                        {
+                            result = (int**) realloc(result, sizeof(int*) * (size_now * 2));
+                            *returnColumnSizes
+                                = (int*) realloc(*returnColumnSizes, sizeof(int) * (size_now * 2));
+                            size_now = size_now * 2;
+                        }
+                        result[*returnSize]               = (int*) malloc(sizeof(int) * 3);
+                        result[*returnSize][0]            = nums[first];
+                        result[*returnSize][1]            = nums[second];
+                        result[*returnSize][2]            = nums[end];
+                        (*returnColumnSizes)[*returnSize] = 3;
+                        *returnSize                       = *returnSize + 1;
+                    }
+                    // Move end to left since the sum is already greater than zero
+                    else if (sum > 0)
+                    {
+                        end--;
+                        second--;
                     }
                 }
-                if (!is_exist)
-                {
-                    if (*returnSize == (size_now - 1))
-                    {
-                        result = (int**) realloc(result, sizeof(int*) * (size_now * 2));
-                        *returnColumnSizes
-                            = (int*) realloc(*returnColumnSizes, sizeof(int) * (size_now * 2));
-                        size_now = size_now * 2;
-                    }
-                    result[*returnSize]               = (int*) malloc(sizeof(int) * 3);
-                    result[*returnSize][0]            = nums[first];
-                    result[*returnSize][1]            = nums[second];
-                    result[*returnSize][2]            = nums[end];
-                    (*returnColumnSizes)[*returnSize] = 3;
-                    *returnSize                       = *returnSize + 1;
-                }
-            }
-            // Move end to left since the sum is already greater than zero
-            else if (sum > 0)
-            {
-                end--;
-                second--;
             }
         }
     }
@@ -159,6 +153,6 @@ int main(int argc, char** argv)
 }
 
 // Accepted
-// 312/312 cases passed (751 ms)
-// Your runtime beats 9.82 % of c submissions
-// Your memory usage beats 6.16 % of c submissions (65.5 MB)
+// 312/312 cases passed (214 ms)
+// Your runtime beats 72.71 % of c submissions
+// Your memory usage beats 27.62 % of c submissions (37.1 MB)
