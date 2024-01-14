@@ -75,7 +75,7 @@ int cmp(const void* a, const void* b) { return *(int*) a - *(int*) b; }
 int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)
 {
     *returnSize        = 0;
-    int   size_now     = 1000;
+    int   size_now     = 100000;
     int** result       = (int**) malloc(sizeof(int*) * size_now);
     *returnColumnSizes = (int*) malloc(sizeof(int) * size_now);
 
@@ -96,10 +96,9 @@ int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes
             {
                 // Search for exist result
                 bool is_exist = false;
-                for (int i = 0; i < (*returnSize); i++)
+                for (int i = (*returnSize) - 1; i >= 0; i--)
                 {
-                    if ((result[i][0] == nums[first]) && (result[i][1] == nums[second])
-                        && (result[i][2] == nums[end]))
+                    if ((result[i][0] == nums[first]) && (result[i][1] == nums[second]))
                     {
                         is_exist = true;
                         break;
@@ -160,6 +159,6 @@ int main(int argc, char** argv)
 }
 
 // Accepted
-// 312/312 cases passed (802 ms)
-// Your runtime beats 5.99 % of c submissions
-// Your memory usage beats 27.62 % of c submissions (37.1 MB)
+// 312/312 cases passed (751 ms)
+// Your runtime beats 9.82 % of c submissions
+// Your memory usage beats 6.16 % of c submissions (65.5 MB)
