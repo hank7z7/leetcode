@@ -72,6 +72,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
+// https://github.com/troydhanson/uthash
 #include "uthash.h"
 // @lc code=start
 #define ARRAY_SIZE 5000
@@ -140,6 +142,8 @@ bool randomizedSetRemove(RandomizedSet* obj, int val)
         hm2->value = hm1->value;
         obj->size--;
         HASH_DEL(obj->hashTable, hm1);
+        // Be careful to free the hm1
+        free(hm1);
 
         return true;
     }
@@ -149,7 +153,14 @@ bool randomizedSetRemove(RandomizedSet* obj, int val)
     }
 }
 
-int randomizedSetGetRandom(RandomizedSet* obj) { return obj->arr[rand() % obj->size]; }
+int randomizedSetGetRandom(RandomizedSet* obj)
+{
+    // Be careful the UB divide by zero
+    if(obj->size != 0)
+        return obj->arr[rand() % obj->size];
+    else
+        return -1;
+}
 
 void randomizedSetFree(RandomizedSet* obj)
 {
@@ -172,6 +183,10 @@ void randomizedSetFree(RandomizedSet* obj)
 
 int main(int argc, char** argv)
 {
+    // Initialize the rand()
+    time_t t;
+    srand((unsigned)time(&t));
+
     RandomizedSet* obj     = randomizedSetCreate();
     int            val     = 0;
     bool           param_1 = randomizedSetInsert(obj, val);
@@ -186,6 +201,6 @@ int main(int argc, char** argv)
 }
 
 // Accepted
-// 19/19 cases passed (266 ms)
-// Your runtime beats 91.47 % of c submissions
-// Your memory usage beats 51.94 % of c submissions (81.4 MB)
+// 19/19 cases passed (273 ms)
+// Your runtime beats 84.19 % of c submissions
+// Your memory usage beats 59.19 % of c submissions (80.4 MB)
