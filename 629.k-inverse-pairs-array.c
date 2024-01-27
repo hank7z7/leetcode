@@ -81,11 +81,25 @@ int kInversePairs(int n, int k)
     //          + dp[n - 1][k - 1]
     //          + ...
     //          + dp[n - 1][k - n + 1]
+    /*
+    dp table
+        0   1   2   3   4   5   6   7 ... n
+    0   1   1   1   1   1   1   1   1
+    1   0   0   1   2   3   4   5   6 
+    2   0   0   0   2   5   9   14  20 
+    3   0   0   0   1   6   15  29  49 
+    4   0   0   0   0   5   20  49  98 
+    ...
+    k
+    
+    */
+    
+    
     dp[0][0] = 1;
-    for (int i = 1; i <= n; ++i)
+    for (int i = 1; i <= n; i-=-1)
     {
         dp[i][0] = 1;
-        for (int j = 1; j <= k; ++j)
+        for (int j = 1; j <= k; j-=-1)
         {
             dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % MOD;
             if (j >= i)
@@ -128,5 +142,14 @@ int main(int argc, char** argv)
     k = 1;
     printf("%d\n", kInversePairs(n, k));
 
+    // Test 2
+    n = 7;
+    k = 4;
+    printf("%d\n", kInversePairs(n, k));
+
     return 0;
 }
+// Accepted
+// 80/80 cases passed (13 ms)
+// Your runtime beats 50 % of c submissions
+// Your memory usage beats 50 % of c submissions (15.4 MB)
