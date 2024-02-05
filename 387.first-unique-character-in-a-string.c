@@ -38,18 +38,19 @@
  */
 
 // @lc code=start
-
+// z ascii in dec is 122
+#define LOWER_Z_ASCII (122 + 1)
 int firstUniqChar(char *s)
 {
-	int alphabet_table[26];
-	memset(alphabet_table, 0, sizeof(int) * 26);
+	int alphabet_table[LOWER_Z_ASCII];
+	memset(alphabet_table, 0, sizeof(int) * LOWER_Z_ASCII);
 	int s_length = strlen(s);
 
 	for (int i = 0; i < s_length; i++)
-		alphabet_table[s[i] - 'a']++;
+		alphabet_table[s[i]]++;
 
 	for (int i = 0; i < s_length; i++)
-		if (alphabet_table[s[i] - 'a'] == 1)
+		if (alphabet_table[s[i]] == 1)
 			return i;
 	return -1;
 }
@@ -57,6 +58,6 @@ int firstUniqChar(char *s)
 // @lc code=end
 
 // Accepted
-// 105/105 cases passed (14 ms)
-// Your runtime beats 73.34 % of c submissions
-// Your memory usage beats 74.83 % of c submissions (7 MB)
+// 105/105 cases passed (4 ms)
+// Your runtime beats 89.69 % of c submissions
+// Your memory usage beats 77.86 % of c submissions (7.1 MB)
