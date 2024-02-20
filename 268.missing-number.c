@@ -15,54 +15,55 @@
  *
  * Given an array nums containing n distinct numbers in the range [0, n],
  * return the only number in the range that is missing from the array.
- * 
- * 
+ *
+ *
  * Example 1:
- * 
- * 
+ *
+ *
  * Input: nums = [3,0,1]
  * Output: 2
  * Explanation: n = 3 since there are 3 numbers, so all numbers are in the
  * range [0,3]. 2 is the missing number in the range since it does not appear
  * in nums.
- * 
- * 
+ *
+ *
  * Example 2:
- * 
- * 
+ *
+ *
  * Input: nums = [0,1]
  * Output: 2
  * Explanation: n = 2 since there are 2 numbers, so all numbers are in the
  * range [0,2]. 2 is the missing number in the range since it does not appear
  * in nums.
- * 
- * 
+ *
+ *
  * Example 3:
- * 
- * 
+ *
+ *
  * Input: nums = [9,6,4,2,3,5,7,0,1]
  * Output: 8
  * Explanation: n = 9 since there are 9 numbers, so all numbers are in the
  * range [0,9]. 8 is the missing number in the range since it does not appear
  * in nums.
- * 
- * 
- * 
+ *
+ *
+ *
  * Constraints:
- * 
- * 
+ *
+ *
  * n == nums.length
  * 1 <= n <= 10^4
  * 0 <= nums[i] <= n
  * All the numbers of nums are unique.
- * 
- * 
- * 
+ *
+ *
+ *
  * Follow up: Could you implement a solution using only O(1) extra space
  * complexity and O(n) runtime complexity?
- * 
+ *
  */
 // #include <bits/stdc++.h>
+#include <stdio.h>
 // @lc code=start
 // #define divide_5_mask 0x1f
 // int missingNumber(int *nums, int numsSize)
@@ -98,27 +99,41 @@
 // 122/122 cases passed (27 ms)
 // Your runtime beats 55.61 % of c submissions
 // Your memory usage beats 29.44 % of c submissions (6.8 MB)
-int missingNumber(int *nums, int numsSize)
+int missingNumber(int* nums, int numsSize)
 {
-	// Amazing!
-    int actual_sum = 0, expected_sum = 0;
-    for(int i = 0; i < numsSize; i++)
+    // Amazing!
+    int expected_sum = numsSize * (numsSize + 1) / 2;
+    for (int i = 0; i < numsSize; i++)
     {
-        expected_sum += i;
-        actual_sum += nums[i];
+        expected_sum -= nums[i];
     }
-    expected_sum += numsSize;
-    return expected_sum - actual_sum;
+
+    return expected_sum;
 }
-// Accepted
-// 122/122 cases passed (17 ms)
-// Your runtime beats 95.53 % of c submissions
-// Your memory usage beats 29.44 % of c submissions (6.8 MB)
 // @lc code=end
 
-// int main()
-// {
-// 	int array[] = {37,21,24,4,35,14,41,36,45,27,2,39,6,8,48,33,0,32,43,40,10,34,23,11,17,16,47,29,15,28,13,5,49,38,9,22,19,1,42,30,3,26,46,44,7,12,25,18,20};
-// 	printf("%d\n", missingNumber(array, sizeof(array)/sizeof(int)));
-// 	return 0;
-// }
+int main()
+{
+    // Test_1
+    int arr_1[] = { 37, 21, 24, 4,  35, 14, 41, 36, 45, 27, 2,  39, 6,  8,  48, 33, 0,
+                    32, 43, 40, 10, 34, 23, 11, 17, 16, 47, 29, 15, 28, 13, 5,  49, 38,
+                    9,  22, 19, 1,  42, 30, 3,  26, 46, 44, 7,  12, 25, 18, 20 };
+    printf("%d\n", missingNumber(arr_1, sizeof(arr_1) / sizeof(int)));
+
+    // Test_2
+    int arr_2[] = { 3, 0, 1 };
+    printf("%d\n", missingNumber(arr_2, sizeof(arr_2) / sizeof(int)));
+
+    // Test_3
+    int arr_3[] = { 9, 6, 4, 2, 3, 5, 7, 0, 1 };
+    printf("%d\n", missingNumber(arr_3, sizeof(arr_3) / sizeof(int)));
+
+    // Test_4
+    int arr_4[] = { 0, 1 };
+    printf("%d\n", missingNumber(arr_4, sizeof(arr_4) / sizeof(int)));
+    return 0;
+}
+// Accepted
+// 122/122 cases passed (8 ms)
+// Your runtime beats 97.34 % of c submissions
+// Your memory usage beats 61.89 % of c submissions (6.5 MB)
