@@ -55,23 +55,24 @@
 #include <stdlib.h>
 #include <string.h>
 // @lc code=start
-#define LOWERCASE_SIZE (26)
 int partitionString(char* s)
 {
     size_t l = strlen(s);
     // Start with 1 because the last substring will not be counted in for loop
     int ret                   = 1;
-    int count[LOWERCASE_SIZE] = { 0 };
+    // bitmask
+    unsigned int count =  0;
     // unordered_map<char, int> um;
     for (size_t i = 0; i < l; i++)
     {
+        unsigned int val = s[i] - 'a';
         // Greedy method: if s[i] is in current substring, partition it
-        if (count[s[i] - 'a'] != 0)
+        if (count & (1 << val))
         {
-            memset(count, 0, sizeof(int) * LOWERCASE_SIZE);
+            count = 0;
             ret++;
         }
-        count[s[i] - 'a']++;
+        count |= (1 << val);
     }
     return ret;
 }
@@ -88,6 +89,12 @@ int main(int argc, char** argv)
     printf("%d\n", partitionString("abacaba"));
     return 0;
 }
+// Optimize by bitmask
+// Accepted
+// 59/59 cases passed (8 ms)
+// Your runtime beats 91.92 % of c submissions
+// Your memory usage beats 94.95 % of c submissions (6.7 MB)
+
 // Accepted
 // 59/59 cases passed (13 ms)
 // Your runtime beats 67.68 % of c submissions
