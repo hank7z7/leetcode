@@ -102,7 +102,7 @@
 int missingNumber(int* nums, int numsSize)
 {
     // Amazing!
-    int expected_sum = numsSize * (numsSize + 1) / 2;
+    int expected_sum = numsSize * (numsSize + 1) >> 1;
     for (int i = 0; i < numsSize; i++)
     {
         expected_sum -= nums[i];

@@ -12,11 +12,10 @@ public:
     int missingNumber(vector<int>& nums)
     {
         int l = (int)nums.size();
-        long long target = (long long)((l + 1) * l / 2);
-        long long sum = 0;
-        for(int i = 0; i < l; i++)
-            sum += (long long)nums[i];
-        return (int)(target - sum);
+        long long target = (long long)((l + 1) * l >> 1);
+        for(auto it : nums)
+            target -= (long long)it;
+        return (int)(target);
     }
 };
 // @lc code=end
