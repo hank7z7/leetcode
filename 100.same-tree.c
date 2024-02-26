@@ -50,7 +50,14 @@
  *
  *
  */
-
+#include <stdio.h>
+#include <stdbool.h>
+struct TreeNode
+{
+    int              val;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
 // @lc code=start
 /**
  * Definition for a binary tree node.
@@ -61,7 +68,8 @@
  * };
  */
 
-bool isSameTree(struct TreeNode *p, struct TreeNode *q) {
+bool isSameTree(struct TreeNode* p, struct TreeNode* q)
+{
     if (p == NULL && q == NULL)
         return true;
     if (p == NULL || q == NULL)
@@ -75,7 +83,41 @@ bool isSameTree(struct TreeNode *p, struct TreeNode *q) {
         return false;
 }
 // @lc code=end
+int main(int argc, char** argv)
+{
+    // Test_1
+    struct TreeNode tree_1_node_1;
+    tree_1_node_1.val = 1;
+    struct TreeNode tree_1_node_2;
+    tree_1_node_2.val = 2;
+    struct TreeNode tree_1_node_3;
+    tree_1_node_3.val   = 3;
+    tree_1_node_1.left  = &tree_1_node_2;
+    tree_1_node_1.right = &tree_1_node_3;
+    tree_1_node_2.left  = NULL;
+    tree_1_node_2.right = NULL;
+    tree_1_node_3.left  = NULL;
+    tree_1_node_3.right = NULL;
 
+    struct TreeNode tree_2_node_1;
+    tree_2_node_1.val = 1;
+    struct TreeNode tree_2_node_2;
+    tree_2_node_2.val = 2;
+    struct TreeNode tree_2_node_3;
+    tree_2_node_3.val   = 3;
+    tree_2_node_1.left  = &tree_2_node_2;
+    tree_2_node_1.right = &tree_2_node_3;
+    tree_2_node_2.left  = NULL;
+    tree_2_node_2.right = NULL;
+    tree_2_node_3.left  = NULL;
+    tree_2_node_3.right = NULL;
+    printf("%d\n", isSameTree(&tree_1_node_1, &tree_2_node_1));
+
+    tree_2_node_1.left = NULL;
+    printf("%d\n", isSameTree(&tree_1_node_1, &tree_2_node_1));
+
+    return 0;
+}
 // Accepted
 // 60/60 cases passed (0 ms)
 // Your runtime beats 100 % of c submissions
