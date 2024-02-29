@@ -92,48 +92,58 @@ using namespace std;
 #define PERSON_1 (0)
 #define PERSON_2 (1)
 #define TIME (2)
+#pragma GCC optimize("O3", "unroll-loops")
 class Solution
 {
-private:
-    bool can_find_next(vector<bool>& know_secret, unordered_map<int, vector<int>>& um)
-    {
-        bool find_new_one = false;
-        for (auto it_um : um)
-        {
-            if (know_secret[it_um.first])
-            {
-                for (auto it_vec : it_um.second)
-                {
-                    if (!know_secret[it_vec])
-                    {
-                        // cout << "pass secret to: " << it_vec << endl;
-                        know_secret[it_vec] = true;
-                        find_new_one        = true;
-                    }
-                }
-            }
-        }
-        return find_new_one;
-    }
-
 public:
     vector<int> findAllPeople(int n, vector<vector<int>>& meetings, int firstPerson)
     {
-        map<int, unordered_map<int, vector<int>>> mp;
-        vector<bool>                              know_secret(n, false);
+        // Hash from "Time" to an "Connection List"
+        map<int, vector<pair<int, int>>> mp;
+        vector<bool>                     know_secret(n, false);
         know_secret[0]           = true;
         know_secret[firstPerson] = true;
-        for (size_t i = 0; i < meetings.size(); i++)
+        for (auto meet : meetings)
         {
-            mp[meetings[i][TIME]][meetings[i][PERSON_1]].push_back(meetings[i][PERSON_2]);
-            // The sharing of secret have two direction!
-            mp[meetings[i][TIME]][meetings[i][PERSON_2]].push_back(meetings[i][PERSON_1]);
+            mp[meet[TIME]].push_back(pair<int, int>(meet[PERSON_1], meet[PERSON_2]));
         }
         for (auto it_mp : mp)
         {
-            // cout << "time: " << it_mp.first << endl;
-            while (can_find_next(know_secret, it_mp.second))
-                ;
+            // Build graph
+            unordered_map<int, vector<int>> graph;  // Adjancency list
+            unordered_set<int>              st;     // Know secret set
+            for (auto connect : it_mp.second)
+            {
+                graph[connect.first].push_back(connect.second);
+                graph[connect.second].push_back(connect.first);
+                if (know_secret[connect.first])
+                    st.insert(connect.first);
+                if (know_secret[connect.second])
+                    st.insert(connect.second);
+            }
+
+            // BFS
+            queue<int> q;
+
+            // Initialize the queue with people already know the secret
+            for (auto& known : st)
+                q.push(known);
+
+            // Search all connection till the queue is empty
+            while (!q.empty())
+            {
+                int curr = q.front();
+                q.pop();
+
+                for (auto& be_shared : graph[curr])
+                {
+                    if (!know_secret[be_shared])
+                    {
+                        know_secret[be_shared] = true;
+                        q.push(be_shared);
+                    }
+                }
+            }
         }
 
         vector<int> ret;
@@ -183,3 +193,7 @@ int main(int argc, char** argv)
 
     return 0;
 }
+// Accepted
+// 55/55 cases passed (791 ms)
+// Your runtime beats 21.12 % of cpp submissions
+// Your memory usage beats 9.95 % of cpp submissions (392.2 MB)
