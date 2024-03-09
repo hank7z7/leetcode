@@ -36,3 +36,6 @@ int main(int argc, char** argv)
 
     return 0;
 }
+// Success
+// Runtime: 73 ms, faster than 49.53% of C++ online submissions for Minimum Common Value.
+// Memory Usage: 53 MB, less than 51.54% of C++ online submissions for Minimum Common Value.
