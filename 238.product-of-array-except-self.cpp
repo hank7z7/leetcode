@@ -14,24 +14,22 @@ public:
     vector<int> productExceptSelf(vector<int>& nums)
     {
         int         size = (int) nums.size();
-        vector<int> prefix_product(size, 0);
-        vector<int> suffix_product(size, 0);
-        vector<int> ret(size, 0);
-        int         prev_pre_prod = 1;
-        int         prev_suf_prod = 1;
+        vector<int> ret(size, 1);
+        int curr;
+        curr = 1;
+        // Result store the (prefix_product from 0 : i - 1)
         for (int i = 0; i < size; i++)
         {
-            prefix_product[i]            = nums[i] * prev_pre_prod;
-            prev_pre_prod                = prefix_product[i];
-            suffix_product[size - i - 1] = nums[size - i - 1] * prev_suf_prod;
-            prev_suf_prod                = suffix_product[size - i - 1];
+            ret[i] *= curr;
+            curr *= nums[i];
         }
 
-        for (int i = 0; i < size; i++)
+        // Result store the prefix_product * (suffix_product from i + 1 : size - 1)
+        curr = 1;
+        for (int i = size - 1; i >= 0; i--)
         {
-            int pre_product = (i == 0 ? 1 : prefix_product[i - 1]);
-            int suf_product = (i == (size - 1) ? 1 : suffix_product[i + 1]);
-            ret[i]          = pre_product * suf_product;
+            ret[i] *= curr;
+            curr *= nums[i];
         }
 
         return ret;
