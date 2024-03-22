@@ -65,23 +65,54 @@ struct ListNode {
  */
 class Solution
 {
-public:
-    bool isPalindrome(ListNode* head)
+private:
+    ListNode* middleNode(ListNode* head)
     {
-        vector<int> val;
+        ListNode* fast = head;
+        ListNode* slow = head;
+        while (fast != NULL && fast->next != NULL)
+        {
+            slow = slow->next;
+            fast = fast->next;
+            if (fast != NULL)
+                fast = fast->next;
+        }
+        return slow;
+    }
+
+    ListNode* reverseList(ListNode* head)
+    {
+        struct ListNode* prev_node = NULL;
         while (head != NULL)
         {
-            val.push_back(head->val);
-            head = head->next;
+            struct ListNode* next_node = head->next;
+            head->next                 = prev_node;
+            prev_node                  = head;
+            if (next_node == NULL)
+                break;
+            head = next_node;
         }
-        bool ret = true;
-        for (int i = 0; i < (int) val.size() / 2; i++)
+        return head;
+    }
+
+public:
+    // Time: O(N + N/2)
+    // Space: O(1)
+    bool isPalindrome(ListNode* head)
+    {
+        struct ListNode* mid         = middleNode(head);
+        struct ListNode* reverse_mid = reverseList(mid);
+        bool             ret         = true;
+        struct ListNode* curr        = reverse_mid;
+        while (curr != NULL && head != curr)
         {
-            if (val[i] != val[(int) val.size() - 1 - i])
+            if (head->val != curr->val || head == reverse_mid)
             {
                 ret = false;
                 break;
             }
+            head = head->next;
+            curr = curr->next;
         }
         return ret;
     }
@@ -102,8 +133,19 @@ int main(int argc, char** argv)
     struct ListNode test_2_node_1 = ListNode(1, &test_2_node_2);
     cout << sol.isPalindrome(&test_2_node_1) << endl;
 
+    // Test_3
+    struct ListNode test_3_node_1 = ListNode(1);
+    cout << sol.isPalindrome(&test_3_node_1) << endl;
+
     return 0;
 }
+// Reverse middle node method
+// Accepted
+// 93/93 cases passed (143 ms)
+// Your runtime beats 94.24 % of cpp submissions
+// Your memory usage beats 70.02 % of cpp submissions (116.6 MB)
+
+// vector and two pointer method
 // Accepted
 // 93/93 cases passed (173 ms)
 // Your runtime beats 54.43 % of cpp submissions
