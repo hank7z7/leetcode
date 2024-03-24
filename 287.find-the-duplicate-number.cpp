@@ -70,19 +70,26 @@ class Solution
 public:
     int findDuplicate(vector<int> &nums)
     {
-        set<int> st;
-        int ret = 0;
-        for (auto num : nums)
+        int tortoise = nums[0];
+        int hare = nums[0];
+
+        tortoise = nums[tortoise];
+        hare = nums[nums[hare]];
+
+        while (tortoise != hare)
         {
-            if (st.find(num) == st.end())
-                st.insert(num);
-            else
-            {
-                ret = num;
-                break;
-            }
+            tortoise = nums[tortoise];
+            hare = nums[nums[hare]];
         }
-        return ret;
+
+        tortoise = nums[0];
+        while (tortoise != hare)
+        {
+            tortoise = nums[tortoise];
+            hare = nums[hare];
+        }
+
+        return hare;
     }
 };
 // @lc code=end
@@ -102,6 +109,13 @@ int main(int argc, char **argv)
     cout << sol.findDuplicate(nums_3) << endl;
     return 0;
 }
+// Tortoise and hare algorithm
+// Accepted
+// 59/59 cases passed (85 ms)
+// Your runtime beats 50.67 % of cpp submissions
+// Your memory usage beats 93.58 % of cpp submissions (63.5 MB)
+
+// Hash Map method
 // Accepted
 // 59/59 cases passed (209 ms)
 // Your runtime beats 5.75 % of cpp submissions
