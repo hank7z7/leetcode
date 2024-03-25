@@ -67,48 +67,85 @@ using namespace std;
 // @lc code=start
 class Solution
 {
-public:
-    int findDuplicate(vector<int> &nums)
+private:
+    static void swap(vector<int>& arr, int i, int j)
     {
-        int tortoise = nums[0];
-        int hare = nums[0];
-
-        tortoise = nums[tortoise];
-        hare = nums[nums[hare]];
-
-        while (tortoise != hare)
-        {
-            tortoise = nums[tortoise];
-            hare = nums[nums[hare]];
-        }
-
-        tortoise = nums[0];
-        while (tortoise != hare)
-        {
-            tortoise = nums[tortoise];
-            hare = nums[hare];
-        }
-
-        return hare;
+        int temp = arr[i];
+        arr[i]   = arr[j];
+        arr[j]   = temp;
     }
+
+public:
+    // Cyclic Sort
+    int findDuplicate(vector<int>& nums)
+    {
+        int i = 0;
+
+        while (i < (int)nums.size())
+        {
+            if (nums[i] != i + 1)
+            {
+                if (nums[i] != nums[nums[i] - 1])
+                    swap(nums, i, nums[i] - 1);
+                else
+                    return nums[i];
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        return -1;
+    }
+    // tortoise and hare algorithm
+    // int findDuplicate(vector<int> &nums)
+    // {
+    //     int tortoise = nums[0];
+    //     int hare = nums[0];
+
+    //     tortoise = nums[tortoise];
+    //     hare = nums[nums[hare]];
+
+    //     while (tortoise != hare)
+    //     {
+    //         tortoise = nums[tortoise];
+    //         hare = nums[nums[hare]];
+    //     }
+
+    //     tortoise = nums[0];
+    //     while (tortoise != hare)
+    //     {
+    //         tortoise = nums[tortoise];
+    //         hare = nums[hare];
+    //     }
+
+    //     return hare;
+    // }
 };
 // @lc code=end
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     Solution sol;
     // Test_1
-    vector<int> nums_1 = {1, 3, 4, 2, 2};
+    vector<int> nums_1 = { 1, 3, 4, 2, 2 };
     cout << sol.findDuplicate(nums_1) << endl;
 
     // Test_2
-    vector<int> nums_2 = {3, 1, 3, 4, 2};
+    vector<int> nums_2 = { 3, 1, 3, 4, 2 };
     cout << sol.findDuplicate(nums_2) << endl;
 
     // Test_3
-    vector<int> nums_3 = {3, 1, 3, 4, 2};
+    vector<int> nums_3 = { 3, 3, 3, 3, 3 };
     cout << sol.findDuplicate(nums_3) << endl;
     return 0;
 }
+// Cyclic Sort
+// Accepted
+// 59/59 cases passed (83 ms)
+// Your runtime beats 53.84 % of cpp submissions
+// Your memory usage beats 77.24 % of cpp submissions (63.6 MB)
+
 // Tortoise and hare algorithm
 // Accepted
 // 59/59 cases passed (85 ms)
