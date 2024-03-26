@@ -76,28 +76,53 @@ private:
     }
 
 public:
-    // Cyclic Sort
+    // Bit Manipulation
     int findDuplicate(vector<int>& nums)
     {
-        int i = 0;
+        vector<int> count(32, 0);
+        vector<int> base(32, 0);
 
-        while (i < (int)nums.size())
+        for (auto num : nums)
+            for (int shift = 0; shift < 32; shift++)
+                count[shift] += (num & (1 << shift)) ? 1 : 0;
+
+        for (int i = 1; i <= (int) nums.size() - 1; i++)
+            for (int shift = 0; shift < 32; shift++)
+                base[shift] += (i & (1 << shift)) ? 1 : 0;
+
+
+        int ret = 0;
+        for (int shift = 0; shift < 32; shift++)
         {
-            if (nums[i] != i + 1)
-            {
-                if (nums[i] != nums[nums[i] - 1])
-                    swap(nums, i, nums[i] - 1);
-                else
-                    return nums[i];
-            }
-            else
-            {
-                i++;
-            }
+            if (count[shift] > base[shift])
+                ret |= (1 << shift);
         }
 
-        return -1;
+        return ret;
     }
+    // Cyclic Sort
+    // int findDuplicate(vector<int>& nums)
+    // {
+    //     int i = 0;
+
+    //     while (i < (int)nums.size())
+    //     {
+    //         if (nums[i] != i + 1)
+    //         {
+    //             if (nums[i] != nums[nums[i] - 1])
+    //                 swap(nums, i, nums[i] - 1);
+    //             else
+    //                 return nums[i];
+    //         }
+    //         else
+    //         {
+    //             i++;
+    //         }
+    //     }
+
+    //     return -1;
+    // }
+
     // tortoise and hare algorithm
     // int findDuplicate(vector<int> &nums)
     // {
@@ -140,6 +165,12 @@ int main(int argc, char** argv)
     cout << sol.findDuplicate(nums_3) << endl;
     return 0;
 }
+// Bit Manipulation
+// Accepted
+// 59/59 cases passed (133 ms)
+// Your runtime beats 18.87 % of cpp submissions
+// Your memory usage beats 47.64 % of cpp submissions (63.8 MB)
+
 // Cyclic Sort
 // Accepted
 // 59/59 cases passed (83 ms)
