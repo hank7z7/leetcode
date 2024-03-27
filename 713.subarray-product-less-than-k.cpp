@@ -54,19 +54,20 @@ class Solution
 public:
     int numSubarrayProductLessThanK(vector<int>& nums, int target)
     {
-        int l     = (int) nums.size();
-        int count = 0;
-        for (int i = 0; i < l; i++)
+        int       l       = (int) nums.size();
+        int       count   = 0;
+        int       i       = 0;
+        long long product = 1;
+        for (int j = i; j < l; j++)
         {
-            long long product = 1;
-            for (int j = i; j < l; j++)
+            product *= nums[j];
+            while (i <= j && product >= (long long) target)
             {
-                product *= (long long) nums[j];
-                if (product < (long long) target)
-                    count++;
-                else
-                    break;
+                product /= nums[i];
+                i++;
             }
+            // Why?
+            count += (j - i + 1);
         }
         return count;
     }
@@ -87,3 +88,7 @@ int main(int argc, char** argv)
 
     return 0;
 }
+// Accepted
+// 98/98 cases passed (55 ms)
+// Your runtime beats 69.12 % of cpp submissions
+// Your memory usage beats 57.48 % of cpp submissions (63.6 MB)
