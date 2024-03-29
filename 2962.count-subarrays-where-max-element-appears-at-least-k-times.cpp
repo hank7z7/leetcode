@@ -60,20 +60,18 @@ public:
         for (auto num : nums)
             max_num = max(max_num, num);
 
-        int max_count = 0;
-        long long count     = 0;
-        for (int i = 0, j = 0; j < (int) nums.size(); j++)
+        // Record index of max_num
+        vector<int> idx;
+        long long count = 0;
+        for (int i = 0; i < (int) nums.size(); i++)
         {
-            if (nums[j] == max_num)
-                max_count++;
-            while (i <= j && max_count >= k)
-            {
-                if (nums[i] == max_num)
-                    max_count--;
-                i++;
-            }
-            count += (long long)i;
+            if (nums[i] == max_num)
+                idx.push_back(i);
+
+            if ((int) idx.size() >= k)
+                count += ((long long) idx[idx.size() - k] + 1);
         }
+
         return count;
     }
 };
@@ -91,8 +89,21 @@ int main(int argc, char** argv)
     int k_2 = 3;
     cout << sol.countSubarrays(nums_2, k_2) << endl;
 
+    // Test_3
+    vector<int> nums_3 = { 61, 23, 38, 23, 56, 40, 82, 56, 82, 82, 82, 70, 8,
+                           69, 8,  7,  19, 14, 58, 42, 82, 10, 82, 78, 15, 82 };
+    int         k_3    = 2;
+    cout << sol.countSubarrays(nums_3, k_3) << endl;
+
     return 0;
 }
+// Vector method
+// Accepted
+// 633/633 cases passed (130 ms)
+// Your runtime beats 64.15 % of cpp submissions
+// Your memory usage beats 38.76 % of cpp submissions (123.7 MB)
+
+
 // Accepted
 // 633/633 cases passed (136 ms)
 // Your runtime beats 51.55 % of cpp submissions
