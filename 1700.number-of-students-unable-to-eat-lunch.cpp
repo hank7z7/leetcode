@@ -87,6 +87,37 @@ class Solution
 public:
     int countStudents(const vector<int>& students, const vector<int>& sandwiches)
     {
+        int ones = 0;
+        int zeros = 0;
+        for(auto student : students)
+        {
+            if(student == 0)
+                zeros++;
+            else if(student == 1)
+                ones++;
+        }
+
+        for(auto sandwich : sandwiches)
+        {
+            if(sandwich == 0)
+            {
+                if(zeros > 0)
+                    zeros--;
+                else if(zeros == 0)
+                    break;
+            }
+            else if(sandwich == 1)
+            {
+                if(ones > 0)
+                    ones--;
+                else if(ones == 0)
+                    break;
+            }
+        }
+
+        return ones + zeros;
+        // Simulation Method
+        /*
         queue<int> q;
         for (auto student : students)
             q.push(student);
@@ -116,6 +147,7 @@ public:
                 break;
         }
         return not_eat;
+        */
     }
 };
 // @lc code=end
@@ -134,6 +166,12 @@ int main(int argc, char** argv)
 
     return 0;
 }
+// Accepted
+// 55/55 cases passed (0 ms)
+// Your runtime beats 100 % of cpp submissions
+// Your memory usage beats 79.46 % of cpp submissions (10.7 MB)
+
+// Simulation method
 // Accepted
 // 55/55 cases passed (5 ms)
 // Your runtime beats 31.29 % of cpp submissions
