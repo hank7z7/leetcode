@@ -73,9 +73,28 @@ using namespace std;
 class Solution
 {
 public:
-    int timeRequiredToBuy(vector<int>& tickets, int k)
+    int timeRequiredToBuy(const vector<int>& tickets, const int k)
     {
         int count = 0;
+        for (int i = 0; i < (int) tickets.size(); i++)
+        {
+            if (i <= k)
+            {
+                if (tickets[i] >= tickets[k])
+                    count += tickets[k];
+                else
+                    count += tickets[i];
+            }
+            else
+            {
+                if (tickets[i] >= (tickets[k] - 1))
+                    count += (tickets[k] - 1);
+                else
+                    count += tickets[i];
+            }
+        }
+        // Simulation method
+        /*
         while (tickets[k] != 0)
         {
             for (int i = 0; i < (int) tickets.size(); i++)
@@ -89,6 +108,7 @@ public:
                     break;
             }
         }
+        */
         return count;
     }
 };
@@ -113,6 +133,12 @@ int main(int argc, char** argv)
 
     return 0;
 }
+// Accepted
+// 65/65 cases passed (0 ms)
+// Your runtime beats 100 % of cpp submissions
+// Your memory usage beats 67.56 % of cpp submissions (9.3 MB)
+
+// Simulation method
 // Accepted
 // 65/65 cases passed (4 ms)
 // Your runtime beats 41.19 % of cpp submissions
