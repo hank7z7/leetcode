@@ -89,6 +89,25 @@ public:
     int sumNumbers(TreeNode* root)
     {
         int result = 0;
+        /* BFS */
+        queue<pair<TreeNode*, int>> q;
+        if (root)
+            q.push({ root, 0 });
+        while (!q.empty())
+        {
+            TreeNode* curr     = q.front().first;
+            int       curr_sum = q.front().second * 10 + curr->val;
+            q.pop();
+            if (curr->left)
+                q.push({ curr->left, curr_sum });
+            if (curr->right)
+                q.push({ curr->right, curr_sum });
+            if (!curr->left && !curr->right)
+                result += curr_sum;
+        }
+
+        /* DFS */
+        /*
         // Stack for DFS recording (pointer to the node, path sum to the node)
         stack<pair<TreeNode*, int>> st;
         // Initialize the DFS
@@ -106,6 +125,7 @@ public:
             if (!curr->left && !curr->right)
                 result += curr_sum;
         }
+        */
         return result;
     }
 };
