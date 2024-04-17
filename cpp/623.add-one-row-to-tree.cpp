@@ -83,74 +83,40 @@ struct TreeNode {
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
+class Solution
+{
 public:
-    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
-        if(depth == 1)
+    TreeNode* addOneRow(TreeNode* root, int val, int depth)
+    {
+        if (depth == 1)
         {
-            TreeNode* new_root = new TreeNode(val);
-            new_root->left = root;
+            TreeNode* new_root = new TreeNode(val, root, NULL);
             return new_root;
         }
         // (Pointer, depth, is left)
         queue<tuple<TreeNode*, int>> q;
-        // (Pointer)
-        vector<TreeNode*> parent;
-        vector<TreeNode*> buttom;
-        int buttom_level = 0;
         // Initialize BFS
-        if(root)
-            q.push({root, 1});
-        while(!q.empty())
+        if (root)
+            q.push({ root, 1 });
+        while (!q.empty())
         {
-            TreeNode* curr = get<0>(q.front());
-            int curr_depth = get<1>(q.front());
-            if(curr_depth == depth - 1)
-                parent.push_back(curr);
-            if(curr_depth > buttom_level)
+            TreeNode* curr       = get<0>(q.front());
+            int       curr_depth = get<1>(q.front());
+
+            if (curr_depth == depth - 1)
             {
-                buttom = vector<TreeNode*>(0);
-                buttom_level = curr_depth;
+                TreeNode* new_left_child = new TreeNode(val, curr->left, NULL);
+                curr->left               = new_left_child;
+
+                TreeNode* new_right_child = new TreeNode(val, NULL, curr->right);
+                curr->right               = new_right_child;
             }
-            if(curr_depth == buttom_level)
-                buttom.push_back(curr);
-            
-            if(curr->left)
-                q.push({curr->left, curr_depth + 1});
-            if(curr->right)
-                q.push({curr->right, curr_depth + 1});
+
+            if (curr->left && curr_depth < depth - 1)
+                q.push({ curr->left, curr_depth + 1 });
+            if (curr->right && curr_depth < depth - 1)
+                q.push({ curr->right, curr_depth + 1 });
             q.pop();
-        }
-
-        for(int i = 0; i < (int)parent.size(); i++)
-        {
-            TreeNode* new_left_node = new TreeNode(val);
-            TreeNode* new_right_node = new TreeNode(val);
-            if(parent[i]->left)
-            {
-                TreeNode* left_child = parent[i]->left;
-                new_left_node->left = left_child;
-                new_left_node->right = NULL;
-            }
-            if(parent[i]->right)
-            {
-                TreeNode* right_child = parent[i]->right;
-                new_right_node->right = right_child;
-                new_right_node->left = NULL;
-            }
-            parent[i]->left = new_left_node;
-            parent[i]->right = new_right_node;
-        }
-
-        if(depth > buttom_level)
-        {
-            for(int i = 0; i < (int)buttom.size(); i++)
-            {
-                TreeNode* new_left_node = new TreeNode(val);
-                TreeNode* new_right_node = new TreeNode(val);
-                buttom[i]->left = new_left_node;
-                buttom[i]->right = new_right_node;
-            }
         }
 
         return root;
@@ -161,37 +127,37 @@ int main(int argc, char** argv)
 {
     Solution sol;
     // Test_1
-    struct TreeNode test_1_node_5 = TreeNode(5);
-    struct TreeNode test_1_node_4 = TreeNode(1);
-    struct TreeNode test_1_node_3 = TreeNode(3);
-    struct TreeNode test_1_node_2 = TreeNode(6, &test_1_node_5, NULL);
-    struct TreeNode test_1_node_1 = TreeNode(2, &test_1_node_3, &test_1_node_4);
-    struct TreeNode test_1_node_0 = TreeNode(4, &test_1_node_1, &test_1_node_2);
-    int val_1 = 1;
-    int depth_1 = 2;
-    struct TreeNode *result_1 = sol.addOneRow(&test_1_node_0, val_1, depth_1);
+    struct TreeNode  test_1_node_5 = TreeNode(5);
+    struct TreeNode  test_1_node_4 = TreeNode(1);
+    struct TreeNode  test_1_node_3 = TreeNode(3);
+    struct TreeNode  test_1_node_2 = TreeNode(6, &test_1_node_5, NULL);
+    struct TreeNode  test_1_node_1 = TreeNode(2, &test_1_node_3, &test_1_node_4);
+    struct TreeNode  test_1_node_0 = TreeNode(4, &test_1_node_1, &test_1_node_2);
+    int              val_1         = 1;
+    int              depth_1       = 2;
+    struct TreeNode* result_1      = sol.addOneRow(&test_1_node_0, val_1, depth_1);
 
     // Test_2
-    struct TreeNode test_2_node_3 = TreeNode(1);
-    struct TreeNode test_2_node_2 = TreeNode(3);
-    struct TreeNode test_2_node_1 = TreeNode(2, &test_2_node_2, &test_2_node_3);
-    struct TreeNode test_2_node_0 = TreeNode(4, &test_2_node_1, NULL);
-    int val_2 = 1;
-    int depth_2 = 3;
-    struct TreeNode *result_2 = sol.addOneRow(&test_2_node_0, val_2, depth_2);
+    struct TreeNode  test_2_node_3 = TreeNode(1);
+    struct TreeNode  test_2_node_2 = TreeNode(3);
+    struct TreeNode  test_2_node_1 = TreeNode(2, &test_2_node_2, &test_2_node_3);
+    struct TreeNode  test_2_node_0 = TreeNode(4, &test_2_node_1, NULL);
+    int              val_2         = 1;
+    int              depth_2       = 3;
+    struct TreeNode* result_2      = sol.addOneRow(&test_2_node_0, val_2, depth_2);
 
     // Test_3
-    struct TreeNode test_3_node_3 = TreeNode(4);
-    struct TreeNode test_3_node_2 = TreeNode(3);
-    struct TreeNode test_3_node_1 = TreeNode(2, &test_3_node_3, NULL);
-    struct TreeNode test_3_node_0 = TreeNode(1, &test_3_node_1, &test_3_node_2);
-    int val_3 = 5;
-    int depth_3 = 4;
-    struct TreeNode *result_3 = sol.addOneRow(&test_3_node_0, val_3, depth_3);
+    struct TreeNode  test_3_node_3 = TreeNode(4);
+    struct TreeNode  test_3_node_2 = TreeNode(3);
+    struct TreeNode  test_3_node_1 = TreeNode(2, &test_3_node_3, NULL);
+    struct TreeNode  test_3_node_0 = TreeNode(1, &test_3_node_1, &test_3_node_2);
+    int              val_3         = 5;
+    int              depth_3       = 4;
+    struct TreeNode* result_3      = sol.addOneRow(&test_3_node_0, val_3, depth_3);
 
     return 0;
 }
 // Accepted
-// 109/109 cases passed (21 ms)
-// Your runtime beats 5.18 % of cpp submissions
-// Your memory usage beats 14.9 % of cpp submissions (25.1 MB)
+// 109/109 cases passed (8 ms)
+// Your runtime beats 91.46 % of cpp submissions
+// Your memory usage beats 14.65 % of cpp submissions (24.7 MB)
