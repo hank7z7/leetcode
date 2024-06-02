@@ -3,7 +3,8 @@
  *
  * [344] Reverse String
  */
-
+#include <bits/stdc++.h>
+using namespace std;
 // @lc code=start
 class Solution
 {
@@ -25,7 +26,25 @@ public:
     }
 };
 // @lc code=end
+int main(int argc, char **argv)
+{
+    Solution sol;
+    // Test_1
+    vector<char> s_1 = {'h', 'e', 'l', 'l', 'o'};
+    sol.reverseString(s_1);
+    for (auto c : s_1)
+        cout << c;
+    cout << endl;
+    // assert(s_1 == vector<char>(5){'o', 'l', 'l', 'e', 'h'});
 
+    // Test_2
+    vector<char> s_2 = {'H', 'a', 'n', 'n', 'a', 'h'};
+    sol.reverseString(s_2);
+    for (auto c : s_2)
+        cout << c;
+    cout << endl;
+    // assert(s_2 == vector<char>(5){'o', 'l', 'l', 'e', 'h'});
+}
 // Accepted
 // 477/477 cases passed (24 ms)
 // Your runtime beats 76.51 % of cpp submissions
