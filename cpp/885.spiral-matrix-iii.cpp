@@ -57,9 +57,13 @@ using namespace std;
 class Solution
 {
 private:
-    bool valid_i_j(int& rows, int& cols, int& i, int& j)
+    void valid_i_j(int& rows, int& cols, int& i, int& j, vector<vector<int>>& res, int& total)
     {
-        return (i >= 0 && i < rows && j >= 0 && j < cols);
+        if (i >= 0 && i < rows && j >= 0 && j < cols)
+        {
+            res.push_back(vector<int>{ i, j });
+            total--;
+        }
     }
 
 public:
@@ -73,49 +77,31 @@ public:
         {
             // Go right
             for (int j = 0; j < r_1; j++, curr_j++)
-                if (valid_i_j(rows, cols, curr_i, curr_j))
-                {
-                    res.push_back(vector<int>{ curr_i, curr_j });
-                    total--;
-                }
+                valid_i_j(rows, cols, curr_i, curr_j, res, total);
 
             // Go down
             for (int i = 0; i < d; i++, curr_i++)
-                if (valid_i_j(rows, cols, curr_i, curr_j))
-                {
-                    res.push_back(vector<int>{ curr_i, curr_j });
-                    total--;
-                }
+                valid_i_j(rows, cols, curr_i, curr_j, res, total);
 
             // Go left
             for (int j = 0; j < l; j++, curr_j--)
-                if (valid_i_j(rows, cols, curr_i, curr_j))
-                {
-                    res.push_back(vector<int>{ curr_i, curr_j });
-                    total--;
-                }
+                valid_i_j(rows, cols, curr_i, curr_j, res, total);
 
             // Go up
             for (int i = 0; i < u; i++, curr_i--)
-                if (valid_i_j(rows, cols, curr_i, curr_j))
-                {
-                    res.push_back(vector<int>{ curr_i, curr_j });
-                    total--;
-                }
+                valid_i_j(rows, cols, curr_i, curr_j, res, total);
 
             // Go right
             for (int j = 0; j < r_2; j++, curr_j++)
-                if (valid_i_j(rows, cols, curr_i, curr_j))
-                {
-                    res.push_back(vector<int>{ curr_i, curr_j });
-                    total--;
-                }
+                valid_i_j(rows, cols, curr_i, curr_j, res, total);
+
             // Update size
             r_1 += 1;
             d += 2;
             l += 2;
             u += 2;
             r_2 += 1;
+
             if (total <= 0)
                 break;
         }
