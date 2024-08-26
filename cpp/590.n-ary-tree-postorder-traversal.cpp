@@ -102,7 +102,22 @@ private:
 public:
     vector<int> postorder(Node* root) {
         vector<int> res;
-        traverse(res, root);
+        // Recursion
+        // traverse(res, root);
+        
+        // Iterative
+        stack<Node*> st;
+        if(root)
+            st.push(root);
+        while(!st.empty())
+        {
+            Node* top_node = st.top();
+            st.pop();
+            for(auto child : top_node->children)
+                st.push(child);
+            res.push_back(top_node->val);
+        }
+        reverse(res.begin(), res.end());
         return res;
     }
 };
