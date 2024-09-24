@@ -68,50 +68,54 @@ using namespace std;
 class Solution
 {
 public:
-    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2)
+    int longestCommonPrefix(vector<int> &arr1, vector<int> &arr2)
     {
-        // um: 424ms, mp: 1124ms;
-        unordered_map<string, int> mp;
-        for (size_t i = 0; i < arr1.size(); i++)
+        // prefix integer -> count
+        unordered_map<int, int> um;
+
+        // Build hash map for all prefixes in arr1
+        for (auto num : arr1)
         {
-            string str = to_string(arr1[i]);
-            string key = "";
-            for (size_t j = 0; j < str.size(); j++)
+            while (num)
             {
-                key.push_back(str[j]);
-                mp[key]++;
+                um[num]++;
+                num /= 10;
             }
         }
-        int ret = 0;
-        for (size_t i = 0; i < arr2.size(); i++)
+
+        // Store the result for max length, so initialize to 0
+        int res = 0;
+
+        // Traverse all prefixes in arr2
+        for (auto num : arr2)
         {
-            string str = to_string(arr2[i]);
-            string key = "";
-            for (size_t j = 0; j < str.size(); j++)
+            while (num)
             {
-                key.push_back(str[j]);
-                if (((int) j + 1) > ret && mp.find(key) != mp.end())
+                if (um.find(num) != um.end())
                 {
-                    if (((int) j + 1) > ret)  // size of key = j + 1
-                        ret = (j + 1);
+                    res = max(res, (int)to_string(num).size());
+                    // Early return since we only need the longest prefix
+                    break;
                 }
+                num /= 10;
             }
         }
-        return ret;
+
+        return res;
     }
 };
 // @lc code=end
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     Solution obj;
     // Test_1
-    vector<int> arr1_1 = { 1, 10, 100 };
-    vector<int> arr2_1 = { 1000 };
+    vector<int> arr1_1 = {1, 10, 100};
+    vector<int> arr2_1 = {1000};
     cout << obj.longestCommonPrefix(arr1_1, arr2_1) << endl;
 
     // Test_2
-    vector<int> arr1_2 = { 1, 2, 3 };
-    vector<int> arr2_2 = { 4, 4, 4 };
+    vector<int> arr1_2 = {1, 2, 3};
+    vector<int> arr2_2 = {4, 4, 4};
     cout << obj.longestCommonPrefix(arr1_2, arr2_2) << endl;
     return 0;
 }
@@ -126,3 +130,9 @@ int main(int argc, char** argv)
 // 717/717 cases passed (1124 ms)
 // Your runtime beats 12.5 % of cpp submissions
 // Your memory usage beats 12.5 % of cpp submissions (164.2 MB)
+
+// unordered_map with prefix -> count
+// Accepted
+// 718/718 cases passed (273 ms)
+// Your runtime beats 65.27 % of cpp submissions
+// Your memory usage beats 84.5 % of cpp submissions (135.7 MB)
