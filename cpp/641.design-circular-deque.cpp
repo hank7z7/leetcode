@@ -79,73 +79,92 @@ class MyCircularDeque
 {
 private:
     size_t capacity;
-    deque<int> dq;
+    size_t size;
+    size_t head, tail;
+    vector<int> dq;
 
 public:
     MyCircularDeque(int k)
     {
         this->capacity = (size_t)k;
-        this->dq = deque<int>{};
+        this->dq = vector<int>(this->capacity);
+        this->size = 0;
+        this->head = this->capacity - 1;
+        this->tail = 0;
     }
 
     bool insertFront(int value)
     {
-        if (this->dq.size() == this->capacity)
+        if (this->isFull())
             return false;
         else
-            this->dq.push_front(value);
+        {
+            this->dq[this->head] = value;
+            this->head = (this->head + this->capacity - 1) % capacity;
+            this->size++;
+        }
         return true;
     }
 
     bool insertLast(int value)
     {
-        if (this->dq.size() == this->capacity)
+        if (this->isFull())
             return false;
         else
-            this->dq.push_back(value);
+        {
+            this->dq[this->tail] = value;
+            this->tail = (this->tail + 1) % capacity;
+            this->size++;
+        }
         return true;
     }
 
     bool deleteFront()
     {
-        if (this->dq.empty())
+        if (this->isEmpty())
             return false;
         else
-            this->dq.pop_front();
+        {
+            this->head = (this->head + 1) % capacity;
+            this->size--;
+        }
         return true;
     }
 
     bool deleteLast()
     {
-        if (this->dq.empty())
+        if (this->isEmpty())
             return false;
         else
-            this->dq.pop_back();
+        {
+            this->tail = (this->tail + capacity - 1) % capacity;
+            this->size--;
+        }
         return true;
     }
 
     int getFront()
     {
-        if (this->dq.empty())
+        if (this->isEmpty())
             return -1;
-        return this->dq.front();
+        return this->dq[(this->head + 1) % capacity];
     }
 
     int getRear()
     {
-        if (this->dq.empty())
+        if (this->isEmpty())
             return -1;
-        return this->dq.back();
+        return this->dq[(this->tail + capacity - 1) % capacity];
     }
 
     bool isEmpty()
     {
-        return this->dq.empty();
+        return this->size == 0;
     }
 
     bool isFull()
     {
-        return this->dq.size() == this->capacity;
+        return this->size == this->capacity;
     }
 };
 
@@ -177,3 +196,7 @@ int main(int argc, char **argv)
 
     return 0;
 }
+// Accepted
+// 51/51 cases passed (20 ms)
+// Your runtime beats 64.1 % of cpp submissions
+// Your memory usage beats 48.19 % of cpp submissions (22.7 MB)
