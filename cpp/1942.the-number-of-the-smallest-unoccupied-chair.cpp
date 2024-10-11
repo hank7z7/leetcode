@@ -80,36 +80,94 @@
 #include <bits/stdc++.h>
 using namespace std;
 // @lc code=start
+class Compare
+{
+public:
+    bool operator()(pair<int, int> a, pair<int, int> b)
+    {
+        return a.first > b.first;
+    }
+};
+
 class Solution
 {
 public:
-    int smallestChair(vector<vector<int>>& times, int targetFriend)
+    int smallestChair(const vector<vector<int>> &times, const int &targetFriend)
     {
-        sort(times.begin(),
-             times.end(),
-             [](const vector<int>& a, const vector<int>& b)
-             { return a[0] < b[0]; });
-        int curr = 0;
-        
+        const int n = (int)times.size();
+
+        vector<int> index(n);
+        iota(index.begin(), index.end(), 0);
+
+        sort(index.begin(),
+             index.end(),
+             [&times](const int &a, const int &b)
+             { return times[a][0] < times[b][0]; });
+
+        priority_queue<int, vector<int>, greater<>> chair; // Empty charis
+        chair.push(0);                                     // Chair 0 is empty when start
+        priority_queue<pair<int, int>, vector<pair<int, int>>, Compare> release;
+
+        for (auto &i : index)
+        {
+            // cout << endl
+            //  << "arrival: " << times[i][0] << ", leave: " << times[i][1] << endl;
+            // Release chairs and push into empty chairs
+            // if(!release.empty())
+            //     cout << "release top: " << release.top().first << endl;
+            while (!release.empty() && release.top().first <= times[i][0])
+            {
+                // cout << "pop out release chair: " << release.top().second << endl;
+                chair.push(release.top().second);
+                release.pop();
+            }
+
+            // Find the occupy num
+            int occupy = chair.top();
+            chair.pop();
+
+            if (i == targetFriend)
+                return occupy;
+
+            if (chair.empty())
+                chair.push(occupy + 1);
+            // cout << "occupy " << occupy << endl;
+            // Push {leave time, chair num}
+            release.push({times[i][1], occupy});
+        }
+
+        // Should not reach here
+        return -1;
     }
 };
 // @lc code=end
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     Solution sol;
     // Test_1
-    vector<vector<int>> times_1 = { { 1, 4 }, { 2, 3 }, { 4, 6 } };
+    vector<vector<int>> times_1 = {{1, 4}, {2, 3}, {4, 6}};
     int target_1 = 1;
     int res_1 = sol.smallestChair(times_1, target_1);
     cout << res_1 << endl;
     assert(res_1 == 1);
 
     // Test_2
-    vector<vector<int>> times_2 = { { 1, 4 }, { 2, 3 }, { 4, 6 } };
-    int target_2 = 1;
+    vector<vector<int>> times_2 = {{3, 10}, {1, 5}, {2, 6}};
+    int target_2 = 0;
     int res_2 = sol.smallestChair(times_2, target_2);
     cout << res_2 << endl;
     assert(res_2 == 2);
 
+    // Test_3
+    vector<vector<int>> times_3 = {{33889, 98676}, {80071, 89737}, {44118, 52565}, {52992, 84310}, {78492, 88209}, {21695, 67063}, {84622, 95452}, {98048, 98856}, {98411, 99433}, {55333, 56548}, {65375, 88566}, {55011, 62821}, {48548, 48656}, {87396, 94825}, {55273, 81868}, {75629, 91467}};
+    int target_3 = 6;
+    int res_3 = sol.smallestChair(times_3, target_3);
+    cout << res_3 << endl;
+    assert(res_3 == 2);
+
     return 0;
 }
+// Accepted
+// 65/65 cases passed (141 ms)
+// Your runtime beats 71.48 % of cpp submissions
+// Your memory usage beats 92.44 % of cpp submissions (56 MB)
