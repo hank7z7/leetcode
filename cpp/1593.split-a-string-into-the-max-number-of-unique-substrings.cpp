@@ -74,8 +74,8 @@ public:
         const int n = (int) s.length();
         for (int fences = (1 << (n - 1)) - 1; fences >= 0; fences--)
         {
-            // if (__builtin_popcount(fences) < maxi)
-            //     continue;
+            if (__builtin_popcount(fences) < maxi)
+                continue;
 
             unordered_set<string> str_set;
             string curr{ s[0] };
