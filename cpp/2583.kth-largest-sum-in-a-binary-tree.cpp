@@ -103,7 +103,6 @@ public:
     {
         level_sum = vector<long long>(100000, 0);
         traverse(root, 0);
-        cout << max_level;
         if (k > (max_level + 1))
             return -1;
         sort(level_sum.begin(),
