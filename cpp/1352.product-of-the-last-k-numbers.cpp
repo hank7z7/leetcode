@@ -83,33 +83,41 @@ class ProductOfNumbers
 {
 private:
     vector<int> nums;
-    // vector<int> prefix_product;
+    int last_zero = 0; // index
 
 public:
     ProductOfNumbers()
     {
         nums = vector<int>{};
-        // prefix_product = vector<int>{};
     }
 
     void add(int num)
     {
-        nums.push_back(num);
-        // if(prefix_product.size() == 0)
-        //     prefix_product.push_back(num);
-        // else
-        //     prefix_product.push_back(prefix_product.back() * num);
-        // cout << prefix_product.back() << endl;
+        if (num == 0)
+        {
+            nums.push_back(num);
+            last_zero = (int)nums.size();
+        }
+        else
+        {
+            int back;
+            if (nums.empty() || nums.back() == 0)
+                back = 1;
+            else
+                back = nums.back();
+            nums.push_back(num * back);
+        }
     }
 
     int getProduct(int k)
     {
         const int n = (int)nums.size();
-        int res = 1;
-        for (int i = 0; i < k; i++)
-            res *= nums[n - 1 - i];
-        return res;
-        // return prefix_product.back() / (prefix_product.back() - k);
+        if ((k + last_zero) > n)
+            return 0;
+        else if ((k + last_zero) == n)
+            return nums[n - 1];
+        else
+            return nums[n - 1] / nums[n - 1 - k];
     }
 };
 
@@ -140,5 +148,25 @@ int main(int argc, char **argv)
     assert(test_1->getProduct(2) == 32);
     delete (test_1);
 
+    // Test_2
+    ProductOfNumbers *test_2 = new ProductOfNumbers();
+    test_2->add(1); // [1]
+    cout << test_2->getProduct(1) << endl;
+    assert(test_2->getProduct(1) == 1);
+    cout << test_2->getProduct(1) << endl;
+    assert(test_2->getProduct(1) == 1);
+    cout << test_2->getProduct(1) << endl;
+    assert(test_2->getProduct(1) == 1);
+    test_2->add(7);
+    test_2->add(6);
+    test_2->add(7);
+    cout << test_2->getProduct(2) << endl;
+    assert(test_2->getProduct(2) == 42);
+    delete (test_2);
+
     return 0;
 }
+// Accepted
+// 33/33 cases passed (12 ms)
+// Your runtime beats 92.06 % of cpp submissions
+// Your memory usage beats 41.53 % of cpp submissions (78.2 MB)
