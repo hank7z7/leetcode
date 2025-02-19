@@ -76,9 +76,11 @@ private:
     const int set_size = 3;
     const vector<char> char_set{'a', 'b', 'c'};
     int idx;
+    int const_n;
+    int const_k;
 
 public:
-    string dfs(string prev, int n, int k)
+    bool dfs(string &prev)
     {
         char back = prev.length() == 0 ? '#' : prev.back();
         for (int i = 0; i < set_size; i++)
@@ -86,29 +88,32 @@ public:
             if (back == char_set[i])
                 continue;
             prev.push_back(char_set[i]);
-            // cout << "trace: " << prev << endl;
-            if ((int)prev.length() == n)
+            if ((int)prev.length() == const_n)
             {
                 idx++;
-                // cout << "idx: " << idx << endl;
-                if (idx == k)
-                    return prev;
+                if (idx == const_k)
+                    return true;
             }
             else
             {
-                string dfs_res = dfs(prev, n, k);
-                if (dfs_res != "")
+                bool dfs_res = dfs(prev);
+                if (dfs_res)
                     return dfs_res;
             }
             prev.pop_back();
         }
-        return "";
+        return false;
     }
     string getHappyString(int n, int k)
     {
-        string res;
+        string init;
         idx = 0;
-        return dfs(res, n, k);
+        const_n = n;
+        const_k = k;
+        bool res = dfs(init);
+        if (res)
+            return init;
+        return "";
     }
 };
 // @lc code=end
