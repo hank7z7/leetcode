@@ -68,15 +68,9 @@ public:
         for (int i = 0; i <= (1 << n) - 1; i++)
         {
             // Convert integer i to a binary string in lenght of n
-            string s = "";
-            for (int j = 0; j < n; j++)
-            {
-                s = ((i & (1 << j)) ? '1' : '0') + s;
-            }
+            string s = bitset<16>(i).to_string().substr(16 - n);
             if (us.find(s) == us.end())
-            {
                 return s;
-            }
         }
         // Should not reach here
         return "";
@@ -107,6 +101,6 @@ int main(int argc, char** argv)
     return 0;
 }
 // Accepted
-// 184/184 cases passed (3 ms)
-// Your runtime beats 26 % of cpp submissions
-// Your memory usage beats 47.18 % of cpp submissions (12.9 MB)
+// 184/184 cases passed (0 ms)
+// Your runtime beats 100 % of cpp submissions
+// Your memory usage beats 55.88 % of cpp submissions (12.9 MB)
