@@ -52,29 +52,13 @@
  */
 #include <bits/stdc++.h>
 
-struct TreeNode
-{
-    int       val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode()
-    : val(0)
-    , left(nullptr)
-    , right(nullptr)
-    {
-    }
-    TreeNode(int x)
-    : val(x)
-    , left(nullptr)
-    , right(nullptr)
-    {
-    }
-    TreeNode(int x, TreeNode* left, TreeNode* right)
-    : val(x)
-    , left(left)
-    , right(right)
-    {
-    }
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 // @lc code=start
@@ -92,7 +76,7 @@ struct TreeNode
 class Solution
 {
 public:
-    bool isSameTree(TreeNode* p, TreeNode* q)
+    bool isSameTree(TreeNode *p, TreeNode *q)
     {
         if (p == NULL && q == NULL)
             return true;
@@ -110,19 +94,19 @@ public:
     }
 };
 // @lc code=end
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    Solution        sol;
+    Solution sol;
     struct TreeNode tree_1_node_1 = TreeNode(1);
     struct TreeNode tree_1_node_2 = TreeNode(2);
     struct TreeNode tree_1_node_3 = TreeNode(3);
-    tree_1_node_1.left            = &tree_1_node_2;
-    tree_1_node_1.right           = &tree_1_node_3;
+    tree_1_node_1.left = &tree_1_node_2;
+    tree_1_node_1.right = &tree_1_node_3;
     struct TreeNode tree_2_node_1 = TreeNode(1);
     struct TreeNode tree_2_node_2 = TreeNode(2);
     struct TreeNode tree_2_node_3 = TreeNode(3);
-    tree_2_node_1.left            = &tree_2_node_2;
-    tree_2_node_1.right           = &tree_2_node_3;
+    tree_2_node_1.left = &tree_2_node_2;
+    tree_2_node_1.right = &tree_2_node_3;
     std::cout << sol.isSameTree(&tree_1_node_1, &tree_2_node_1) << std::endl;
 
     return 0;
