@@ -147,9 +147,7 @@ public:
         };
         dfs_bob(bob, -1);
         // for (auto &p : bob_path)
-        // {
         //     cout << p.first << " " << p.second << endl;
-        // }
         const int bob_n = (int)bob_path.size();
         // cout << "bob_n: " << bob_n << endl;
         visited = vector<bool>(n, false);
@@ -157,12 +155,21 @@ public:
         function<void(int, int, int, int)> dfs_alice = [&](int u, int parent, int d, int income)
         {
             cout << "curr node: " << u << ", d = " << d << endl;
+            int before_income = income;
+            visited[u] = true;
+
+            int connect = 0;
+            for (int v : adj[u])
+                if (!visited[v])
+                    connect++;
+            if (connect == 0)
+                res = max(res, income);
+            cout << "connect: " << connect << endl;
             for (auto &a : amount)
                 cout << a << " ";
             cout << endl;
-            cout << "income: " << income << endl;
+            cout << "before income: " << income << endl;
 
-            visited[u] = true;
 
             bool has_prev_u = false;
             int prev_u = 0;
@@ -196,14 +203,15 @@ public:
                 prev_u = amount[u];
                 amount[u] = 0;
             }
+            cout << "after income: " << income << endl;
+            if (connect == 0)
+                res = max(res, income);
 
             // DFS
-            bool is_leaf = true;
             for (int v : adj[u])
             {
                 if (!visited[v])
                 {
-                    is_leaf = false;
                     dfs_alice(v, u, d + 1, income);
                     if (has_prev_u)
                         amount[u] = prev_u;
@@ -211,11 +219,7 @@ public:
                         amount[bob_path[d].first] = prev_d;
                 }
             }
-            if (is_leaf)
-            {
-                // Update result
-                res = max(res, income);
-            }
+
             visited[u] = false;
         };
         dfs_alice(0, -1, 0, 0);
@@ -258,6 +262,14 @@ int main()
     int test_4_res = sol.mostProfitablePath(test_4_edges, test_4_bob, test_4_amount);
     cout << test_4_res << endl;
     assert((test_4_res == -7280));
+
+    // Test_5
+    vector<vector<int>> test_5_edges = {{0, 2}, {0, 6}, {1, 3}, {1, 5}, {2, 5}, {4, 6}};
+    int test_5_bob = 6;
+    vector<int> test_5_amount = {8838, -6396, -5940, 2694, -1366, 4616, 2966};
+    int test_5_res = sol.mostProfitablePath(test_5_edges, test_5_bob, test_5_amount);
+    cout << test_5_res << endl;
+    assert((test_5_res == 7472));
 
     return 0;
 }
