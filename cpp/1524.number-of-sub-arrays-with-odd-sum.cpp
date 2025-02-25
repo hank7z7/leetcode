@@ -71,8 +71,8 @@ public:
         int res = 0;
         for (int i = 0; i < n; i++)
         {
-            sum += arr[i];
-            if (sum % 2 == 0)
+            sum ^= arr[i];
+            if ((sum & 1) == 0)
             {
                 res = (res + odd) % MOD;
                 even++;
@@ -111,6 +111,6 @@ int main(int argc, char** argv)
     return 0;
 }
 // Accepted
-// 151/151 cases passed (8 ms)
-// Your runtime beats 35.7 % of cpp submissions
-// Your memory usage beats 80 % of cpp submissions (111.9 MB)
+// 151/151 cases passed (1 ms)
+// Your runtime beats 80.81 % of cpp submissions
+// Your memory usage beats 32.08 % of cpp submissions (112.1 MB)
