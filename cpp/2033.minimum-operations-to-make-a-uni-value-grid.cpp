@@ -76,40 +76,24 @@ public:
         if (m == 0 || n == 0)
             return 0;
 
-        // num -> count
-        map<int, int> mp;
+        // Sort grid
+        vector<int> nums;
         for (int i = 0; i < m; i++)
             for (int j = 0; j < n; j++)
-                mp[grid[i][j]]++;
+                nums.push_back(grid[i][j]);
+        sort(nums.begin(), nums.end());
 
         // Find the num that has median of count
         const int median = total / 2;
-        int curr_cnt = 0;
-        bool first = true;
-        int median_num_1 = INT_MIN;
-        int median_num_2 = INT_MIN;
-        for (auto& [num, cnt] : mp)
-        {
-            curr_cnt += cnt;
-            if (first && curr_cnt >= median)
-            {
-                first = false;
-                median_num_1 = num;
-            }
-            if (curr_cnt > median)
-            {
-                median_num_2 = num;
-                break;
-            }
-        }
-        // cout << median_num_1 << " " << median_num_2 << endl;
+        int median_num_1 = nums[median];
+        int median_num_2 = (median + 1) >= n ? nums[median] : nums[median + 1];
 
         // Check if it is possible for making the grid uni-value
         bool possible_1 = true;
         int res_1 = 0;
         bool possible_2 = true;
         int res_2 = 0;
-        for (auto& [num, freq] : mp)
+        for (auto& num : nums)
         {
             // Early return
             if (!possible_1 && !possible_2)
@@ -120,14 +104,14 @@ public:
             {
                 possible_1 = false;
             }
-            res_1 += diff_1 / x * freq;
+            res_1 += diff_1 / x;
 
             int diff_2 = abs(num - median_num_2);
             if (diff_2 % x != 0)
             {
                 possible_2 = false;
             }
-            res_2 += diff_2 / x * freq;
+            res_2 += diff_2 / x;
         }
 
         if (!possible_1 && !possible_2)
@@ -160,9 +144,16 @@ int main(int argc, char** argv)
     cout << res_3 << endl;
     assert(res_3 == -1);
 
+    // Test_4
+    vector<vector<int>> grid_4 = { { 146 } };
+    int x_4 = 86;
+    int res_4 = sol.minOperations(grid_4, x_4);
+    cout << res_4 << endl;
+    assert(res_4 == 0);
+
     return 0;
 }
 // Accepted
-// 62/62 cases passed (63 ms)
-// Your runtime beats 10.94 % of cpp submissions
-// Your memory usage beats 97.87 % of cpp submissions (80.8 MB)
+// 62/62 cases passed (45 ms)
+// Your runtime beats 48.94 % of cpp submissions
+// Your memory usage beats 48.02 % of cpp submissions (90.1 MB)
