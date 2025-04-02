@@ -75,33 +75,36 @@ public:
         const int n = (int) nums.size();
         vector<LL> max_right(n, LONG_LONG_MIN);
         vector<LL> min_right(n, LONG_LONG_MAX);
-        LL max_val = LONG_LONG_MIN, min_val = LONG_LONG_MAX;
+        LL max_val = LONG_LONG_MIN;
+        // LL min_val = LONG_LONG_MAX;
         for (int i = n - 1; i >= 0; i--)
         {
             max_val = max(max_val, (LL) nums[i]);
-            min_val = min(min_val, (LL) nums[i]);
+            // min_val = min(min_val, (LL) nums[i]);
             max_right[i] = max_val;
-            min_right[i] = min_val;
+            // min_right[i] = min_val;
         }
 
-        LL max_left = LONG_LONG_MIN, min_left = LONG_LONG_MAX;
+        LL max_left = LONG_LONG_MIN;
+        // LL min_left = LONG_LONG_MAX;
         LL res = 0;
         // Iterate the second index
         for (int i = 0; i < n - 1; i++)
         {
             if (i != 0)
             {
-                LL curr_max = 0;
-                res = max(res, max(curr_max, (max_left - (LL) nums[i]) * max_right[i + 1]));
-                res = max(res, max(curr_max, (max_left - (LL) nums[i]) * min_right[i + 1]));
-                res = max(res, max(curr_max, (min_left - (LL) nums[i]) * max_right[i + 1]));
-                res = max(res, max(curr_max, (min_left - (LL) nums[i]) * min_right[i + 1]));
+                // LL curr_max = 0;
+                res = max(res, (max_left - (LL) nums[i]) * max_right[i + 1]);
+                // res = max(res, max(curr_max, (max_left - (LL) nums[i]) * max_right[i + 1]));
+                // res = max(res, max(curr_max, (max_left - (LL) nums[i]) * min_right[i + 1]));
+                // res = max(res, max(curr_max, (min_left - (LL) nums[i]) * max_right[i + 1]));
+                // res = max(res, max(curr_max, (min_left - (LL) nums[i]) * min_right[i + 1]));
             }
 
 
             // Update max_left and min_left
             max_left = max(max_left, (LL) nums[i]);
-            min_left = min(min_left, (LL) nums[i]);
+            // min_left = min(min_left, (LL) nums[i]);
         }
         return res;
     }
@@ -133,6 +136,12 @@ int main(int argc, char** argv)
     long long res_4 = sol.maximumTripletValue(nums_4);
     cout << res_4 << endl;
     assert(res_4 == 999999000000);
+
+    // Test_5
+    vector<int> nums_5 = { 1, 2, 1000000, 1, 2 };
+    long long res_5 = sol.maximumTripletValue(nums_5);
+    cout << res_5 << endl;
+    assert(res_5 == 1999998);
 
     return 0;
 }
