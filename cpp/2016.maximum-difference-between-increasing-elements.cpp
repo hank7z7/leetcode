@@ -70,17 +70,18 @@ public:
     int maximumDifference(vector<int>& nums)
     {
         int res = -1;
-        stack<int> st;
+        int min_so_far = INT_MAX;  // minumum value seen so far
         for (auto& num : nums)
         {
-            if (!st.empty() && num > st.top())
+            if (min_so_far != INT_MAX && num > min_so_far)
             {
-                // Calculate the difference and update res if it's greater
-                res = max(res, num - st.top());
+                // If current number is greater than the minimum seen so far,
+                // calculate the difference and update res if it's greater
+                res = max(res, num - min_so_far);
             }
             else
             {
-                st.push(num);  // Push the current number onto the stack
+                min_so_far = num;  // Push the current number as the new minimum
             }
         }
         return res;
@@ -113,4 +114,4 @@ int main(int argc, char** argv)
 // Accepted
 // 54/54 cases passed (0 ms)
 // Your runtime beats 100 % of cpp submissions
-// Your memory usage beats 10.39 % of cpp submissions (12 MB)
+// Your memory usage beats 38.11 % of cpp submissions (11.9 MB)
