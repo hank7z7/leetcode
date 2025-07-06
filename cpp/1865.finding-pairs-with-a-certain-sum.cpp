@@ -86,25 +86,25 @@ class FindSumPairs
     // map2: num2 value -> count
     // array for nums2 to keep track of the original values
 private:
-    map<int, int> map1;  // map for nums1
-    map<int, int> map2;  // map for nums2
+    unordered_map<int, int> map1;  // map for nums1
+    unordered_map<int, int> map2;  // map for nums2
     vector<int> nums2;   // to keep track of the original values of nums2
 public:
     FindSumPairs(vector<int>& nums1, vector<int>& nums2)
     {
         // Initialize the data structure
         this->nums2.clear();
-        map1.clear();
-        map2.clear();
+        this->map1.clear();
+        this->map2.clear();
 
         // Store the counts of each number in nums1 and nums2
         for (int num : nums1)
         {
-            map1[num]++;
+            this->map1[num]++;
         }
         for (int num : nums2)
         {
-            map2[num]++;
+            this->map2[num]++;
         }
 
         // Store the original nums2 values
@@ -135,6 +135,10 @@ public:
         return count;
     }
 };
+// Time Complexity:
+// - O(n) for initialization, where n is the size of nums1 and nums2
+// - O(1) for add operation, since we are just updating the count in the map
+// - O(m) for count operation, where m is the number of unique elements in
 
 /**
  * Your FindSumPairs object will be instantiated and called as such:
@@ -162,6 +166,6 @@ int main(int argc, char** argv)
     return 0;
 }
 // Accepted
-// 26/26 cases passed (303 ms)
-// Your runtime beats 28.18 % of cpp submissions
-// Your memory usage beats 41.54 % of cpp submissions (83.4 MB)
+// 26/26 cases passed (50 ms)
+// Your runtime beats 95.41 % of cpp submissions
+// Your memory usage beats 54.91 % of cpp submissions (82 MB)
